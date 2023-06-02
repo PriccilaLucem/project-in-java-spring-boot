@@ -11,28 +11,28 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.Map;
 import java.util.HashMap;
 import java.util.List;
-import com.my_project.my_project.models.User;
-import com.my_project.my_project.services.UserServices;
+import com.my_project.my_project.models.Order;
+import com.my_project.my_project.services.OrderServices;
 
 @RestController
-@RequestMapping(value = "users")
-public class UserResource {
+@RequestMapping(value = "orders")
+public class OrderResource {
 
     @Autowired
-    private UserServices service;
+    private OrderServices service;
 
     @GetMapping
-    public ResponseEntity<List<User>> getAll() {
-        List<User> users = service.listAllUsers();
+    public ResponseEntity<List<Order>> getAll() {
+        List<Order> orders = service.listAllUsers();
 
-        return ResponseEntity.ok().body(users);
+        return ResponseEntity.ok().body(orders);
     }
 
     @GetMapping(value = "/{id}")
     public ResponseEntity<?> getById(@PathVariable Long id) {
-        User user = service.getOneUser(id);
+        Order order = service.getOneUser(id);
 
-        if (user.getId() == null) {
+        if (order.getId() == null) {
             Map<String, String> response = new HashMap<>();
             response.put("error:", "User Not Found");
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
