@@ -18,7 +18,7 @@ public class OrderServices {
     }
 
     public Order getOneUser(Long id) {
-        Order user = orderRepository.findById(id).orElse(new Order());
-        return user;
+        Order order = orderRepository.findById(id).orElse(new Order());
+        return order;
     }
 }
