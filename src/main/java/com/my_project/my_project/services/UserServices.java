@@ -5,7 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.my_project.my_project.models.User;
+import com.my_project.my_project.entities.User;
 import com.my_project.my_project.repostories.UserRepository;
 
 @Service

@@ -11,7 +11,8 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.Map;
 import java.util.HashMap;
 import java.util.List;
-import com.my_project.my_project.models.User;
+
+import com.my_project.my_project.entities.User;
 import com.my_project.my_project.services.UserServices;
 
 @RestController

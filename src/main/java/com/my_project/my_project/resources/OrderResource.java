@@ -11,7 +11,8 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.Map;
 import java.util.HashMap;
 import java.util.List;
-import com.my_project.my_project.models.Order;
+
+import com.my_project.my_project.entities.Order;
 import com.my_project.my_project.services.OrderServices;
 
 @RestController
@@ -34,7 +35,7 @@ public class OrderResource {
 
         if (order.getId() == null) {
             Map<String, String> response = new HashMap<>();
-            response.put("error:", "User Not Found");
+            response.put("error:", "Order Not Found");
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
         } else {
             return ResponseEntity.ok().body(service.getOneUser(id));

@@ -5,7 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.my_project.my_project.models.Order;
+import com.my_project.my_project.entities.Order;
 import com.my_project.my_project.repostories.OrderRepository;
 
 @Service
