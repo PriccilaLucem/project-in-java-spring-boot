@@ -9,10 +9,12 @@ import org.springframework.context.annotation.Profile;
 
 import com.my_project.my_project.entities.Category;
 import com.my_project.my_project.entities.Order;
+import com.my_project.my_project.entities.Product;
 import com.my_project.my_project.entities.User;
 import com.my_project.my_project.entities.enums.OrderStatus;
 import com.my_project.my_project.repostories.CategoryRepository;
 import com.my_project.my_project.repostories.OrderRepository;
+import com.my_project.my_project.repostories.ProductRepository;
 import com.my_project.my_project.repostories.UserRepository;
 
 @Configuration
@@ -28,6 +30,9 @@ public class TestConfig implements CommandLineRunner {
     @Autowired
     private CategoryRepository categoryRepository;
 
+    @Autowired
+    private ProductRepository productRepository;
+
     @Override
     public void run(String... args) throws Exception {
         User user1 = new User(null, "name", "email.com", "phone", "123456");
@@ -37,6 +42,14 @@ public class TestConfig implements CommandLineRunner {
 
         Category category = new Category(null, "Eletronics");
         categoryRepository.save(category);
+
+        Product p1 = new Product(null, "The Lord of the Rings", "Lorem ipsum dolorsit amet, consectetur.", 90.5, "");
+
+        productRepository.save(p1);
+
+        p1.getCategories().add(category);
+
+        productRepository.save(p1);
     }
 
 }

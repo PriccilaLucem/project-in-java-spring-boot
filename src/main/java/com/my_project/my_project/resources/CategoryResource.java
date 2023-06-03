@@ -16,7 +16,7 @@ import com.my_project.my_project.entities.Category;
 import com.my_project.my_project.services.CategoryServices;
 
 @RestController
-@RequestMapping(value = "orders")
+@RequestMapping(value = "/categories")
 public class CategoryResource {
 
     @Autowired
@@ -24,21 +24,21 @@ public class CategoryResource {
 
     @GetMapping
     public ResponseEntity<List<Category>> getAll() {
-        List<Category> categories = service.listAllUsers();
+        List<Category> categories = service.getAllCategories();
 
         return ResponseEntity.ok().body(categories);
     }
 
     @GetMapping(value = "/{id}")
     public ResponseEntity<?> getById(@PathVariable Long id) {
-        Category category = service.getOneUser(id);
+        Category category = service.getOneCategory(id);
 
         if (category.getId() == null) {
             Map<String, String> response = new HashMap<>();
             response.put("error:", "Order Not Found");
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
         } else {
-            return ResponseEntity.ok().body(service.getOneUser(id));
+            return ResponseEntity.ok().body(category);
         }
     }
 

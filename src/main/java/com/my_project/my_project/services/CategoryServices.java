@@ -13,11 +13,11 @@ public class CategoryServices {
     @Autowired
     private CategoryRepository categoryRepository;
 
-    public List<Category> listAllUsers() {
+    public List<Category> getAllCategories() {
         return categoryRepository.findAll();
     }
 
-    public Category getOneUser(Long id) {
+    public Category getOneCategory(Long id) {
         Category category = categoryRepository.findById(id).orElse(new Category());
         return category;
     }

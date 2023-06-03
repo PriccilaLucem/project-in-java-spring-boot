@@ -16,7 +16,7 @@ import com.my_project.my_project.entities.User;
 import com.my_project.my_project.services.UserServices;
 
 @RestController
-@RequestMapping(value = "users")
+@RequestMapping(value = "/users")
 public class UserResource {
 
     @Autowired
@@ -38,7 +38,7 @@ public class UserResource {
             response.put("error:", "User Not Found");
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
         } else {
-            return ResponseEntity.ok().body(service.getOneUser(id));
+            return ResponseEntity.ok().body(user);
         }
     }
 

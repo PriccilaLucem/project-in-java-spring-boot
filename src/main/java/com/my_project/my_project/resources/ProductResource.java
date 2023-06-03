@@ -16,20 +16,20 @@ import com.my_project.my_project.entities.Product;
 import com.my_project.my_project.services.ProductServices;
 
 @RestController
-@RequestMapping(value = "products")
+@RequestMapping(value = "/products")
 public class ProductResource {
 
     @Autowired
-    ProductServices services;
+    private ProductServices services;
 
     @GetMapping
     public ResponseEntity<List<Product>> getAllProducts() {
-        return ResponseEntity.ok().body(services.getUsers());
+        return ResponseEntity.ok().body(services.getProducts());
     }
 
     @GetMapping(value = "/{id}")
     public ResponseEntity<?> getOneProduct(@PathVariable Long id) {
-        Product product = services.getUser(id);
+        Product product = services.getProduct(id);
         if (product.getId() == null) {
             Map<String, String> response = new HashMap<>();
             response.put("error:", "User Not Found");

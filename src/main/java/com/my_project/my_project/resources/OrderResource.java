@@ -16,7 +16,7 @@ import com.my_project.my_project.entities.Order;
 import com.my_project.my_project.services.OrderServices;
 
 @RestController
-@RequestMapping(value = "orders")
+@RequestMapping(value = "/orders")
 public class OrderResource {
 
     @Autowired
