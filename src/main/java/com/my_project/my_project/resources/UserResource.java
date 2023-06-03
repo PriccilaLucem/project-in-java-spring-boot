@@ -1,7 +1,8 @@
 package com.my_project.my_project.resources;
 
-import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -54,21 +55,19 @@ public class UserResource {
 
     @DeleteMapping(value = "/{id}")
     public ResponseEntity<?> deleteUser(@PathVariable Long id) {
-        User user = service.getOneUser(id);
-        System.out.println(user);
-        if (user.getId() == null) {
+        try {
+            service.deleteUser(id);
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+
+        } catch (DataIntegrityViolationException e) {
+            Map<String, String> response = new HashMap<>();
+            response.put("error", "Cannot delete user 1, there are orders attreling to user 1");
+            return ResponseEntity.badRequest().body(response);
+
+        } catch (EmptyResultDataAccessException e) {
             Map<String, String> response = new HashMap<>();
             response.put("error:", "User Not Found");
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
-        }
-        try {
-
-            service.deleteUser(id);
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        } catch (ConstraintViolationException e) {
-            Map<String, String> response = new HashMap<>();
-            response.put("error", e.getMessage());
-            return ResponseEntity.badRequest().body(response);
         }
 
     }
