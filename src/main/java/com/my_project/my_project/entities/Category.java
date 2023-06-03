@@ -6,7 +6,9 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 @Table(name = "categories")
@@ -15,6 +17,7 @@ public class Category {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
+    private Set<Product> products = new HashSet<>();
 
     public Category() {
     }
@@ -64,6 +67,10 @@ public class Category {
     @Override
     public int hashCode() {
         return Objects.hash(id, name);
+    }
+
+    public Set<Product> getProducts() {
+        return this.products;
     }
 
     @Override
