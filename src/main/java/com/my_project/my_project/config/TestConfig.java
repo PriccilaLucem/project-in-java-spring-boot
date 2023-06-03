@@ -9,10 +9,12 @@ import org.springframework.context.annotation.Profile;
 
 import com.my_project.my_project.entities.Category;
 import com.my_project.my_project.entities.Order;
+import com.my_project.my_project.entities.OrderItem;
 import com.my_project.my_project.entities.Product;
 import com.my_project.my_project.entities.User;
 import com.my_project.my_project.entities.enums.OrderStatus;
 import com.my_project.my_project.repostories.CategoryRepository;
+import com.my_project.my_project.repostories.OrderItemRepository;
 import com.my_project.my_project.repostories.OrderRepository;
 import com.my_project.my_project.repostories.ProductRepository;
 import com.my_project.my_project.repostories.UserRepository;
@@ -33,6 +35,9 @@ public class TestConfig implements CommandLineRunner {
     @Autowired
     private ProductRepository productRepository;
 
+    @Autowired
+    private OrderItemRepository orderItemRepository;
+
     @Override
     public void run(String... args) throws Exception {
         User user1 = new User(null, "name", "email.com", "phone", "123456");
@@ -50,6 +55,9 @@ public class TestConfig implements CommandLineRunner {
         p1.getCategories().add(category);
 
         productRepository.save(p1);
+        OrderItem oi1 = new OrderItem(p1, o1, 2, p1.getPrice());
+
+        orderItemRepository.save(oi1);
     }
 
 }
