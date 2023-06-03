@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -19,6 +20,8 @@ import java.util.List;
 
 import com.my_project.my_project.entities.User;
 import com.my_project.my_project.services.UserServices;
+
+import jakarta.persistence.EntityNotFoundException;
 
 @RestController
 @RequestMapping(value = "/users")
@@ -65,6 +68,20 @@ public class UserResource {
             return ResponseEntity.badRequest().body(response);
 
         } catch (EmptyResultDataAccessException e) {
+            Map<String, String> response = new HashMap<>();
+            response.put("error:", "User Not Found");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+        }
+
+    }
+
+    @PutMapping(value = "/{id}")
+    public ResponseEntity<?> patchUser(@PathVariable Long id, @RequestBody User patchItens) {
+        try {
+
+            User user = service.updateUser(id, patchItens);
+            return ResponseEntity.accepted().body(user);
+        } catch (EntityNotFoundException e) {
             Map<String, String> response = new HashMap<>();
             response.put("error:", "User Not Found");
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
