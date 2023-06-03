@@ -6,6 +6,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
 import org.mindrot.jbcrypt.BCrypt;
 
@@ -43,6 +44,13 @@ public class User implements Serializable {
         String salt = BCrypt.gensalt();
         String hashPassword = BCrypt.hashpw(password, salt);
 
+        this.password = hashPassword;
+    }
+
+    @PrePersist
+    public void beforeInsert() {
+        String salt = BCrypt.gensalt();
+        String hashPassword = BCrypt.hashpw(password, salt);
         this.password = hashPassword;
     }
 
