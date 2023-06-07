@@ -1,5 +1,12 @@
 package com.my_project.my_project.entities;
+import java.security.Key;
 import java.util.Objects;
+
+import com.my_project.my_project.entities.dto.UserDto;
+
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.security.Keys;
 
 public class Login {
     
@@ -18,7 +25,12 @@ public class Login {
     public String getPassword() {
         return this.password;
     }
-
+    public static String generateToken(UserDto user){
+        Key key = Keys.secretKeyFor(SignatureAlgorithm.HS256);
+        return  Jwts.builder().claim("user", user).signWith(key).compact();
+        
+        
+    }
     public void setPassword(String password) {
         this.password = password;
     }

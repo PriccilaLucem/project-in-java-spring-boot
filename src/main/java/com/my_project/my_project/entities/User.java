@@ -11,6 +11,7 @@ import jakarta.persistence.Table;
 import org.mindrot.jbcrypt.BCrypt;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.my_project.my_project.entities.dto.UserDto;
 import com.my_project.my_project.resources.exceptions.PasswordException;
 
 import java.io.Serializable;
@@ -139,6 +140,10 @@ public class User implements Serializable {
                 ", email='" + getEmail() + "'" +
                 ", phone='" + getPhone() + "'" +
                 "}";
+    }
+
+    public UserDto createUserDto(){
+        return new UserDto(id, name, email, phone);
     }
 
 }

@@ -15,6 +15,8 @@ import java.util.List;
 import com.my_project.my_project.entities.Category;
 import com.my_project.my_project.services.CategoryServices;
 
+import jakarta.persistence.EntityNotFoundException;
+
 @RestController
 @RequestMapping(value = "/categories")
 public class CategoryResource {
@@ -31,14 +33,16 @@ public class CategoryResource {
 
     @GetMapping(value = "/{id}")
     public ResponseEntity<?> getById(@PathVariable Long id) {
-        Category category = service.getOneCategory(id);
-
-        if (category.getId() == null) {
-            Map<String, String> response = new HashMap<>();
-            response.put("error:", "Order Not Found");
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
-        } else {
+        Map<String, String> response = new HashMap<>();
+        
+        try{
+            Category category = service.getOneCategory(id);
             return ResponseEntity.ok().body(category);
+
+       
+        } catch(EntityNotFoundException e) {
+            response.put("error:", "Category Not Found");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
         }
     }
 

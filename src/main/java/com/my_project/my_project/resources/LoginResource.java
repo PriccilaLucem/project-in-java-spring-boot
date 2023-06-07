@@ -1,6 +1,5 @@
 package com.my_project.my_project.resources;
 
-import java.security.Key;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -18,9 +17,6 @@ import com.my_project.my_project.entities.dto.UserDto;
 import com.my_project.my_project.resources.exceptions.PasswordException;
 import com.my_project.my_project.services.UserServices;
 
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
-import io.jsonwebtoken.security.Keys;
 import jakarta.persistence.EntityNotFoundException;
 
 
@@ -38,13 +34,15 @@ public class LoginResource {
         try{
             User user = userServices.getByEmail(login.getEmail());
             user.verifyPassword(login.getPassword());
-            UserDto obj = new UserDto(user.getId(), user.getName(), user.getEmail(), user.getPhone());
+            
+            UserDto obj = user.createUserDto();
 
-            Key key = Keys.secretKeyFor(SignatureAlgorithm.HS256);
-            String token = Jwts.builder().claim("user", obj).signWith(key).compact();
+            String token = Login.generateToken(obj);
+
             response.put("token: ", token);
-
+            
             return ResponseEntity.ok().body(response);
+        
         }catch(EntityNotFoundException e){
             response.put("error", e.getMessage());
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);

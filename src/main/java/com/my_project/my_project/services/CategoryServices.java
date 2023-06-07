@@ -18,7 +18,6 @@ public class CategoryServices {
     }
 
     public Category getOneCategory(Long id) {
-        Category category = categoryRepository.findById(id).orElse(new Category());
-        return category;
+        return categoryRepository.findById(id).get();
     }
 }
