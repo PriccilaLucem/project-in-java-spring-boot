@@ -15,6 +15,8 @@ import java.util.List;
 import com.my_project.my_project.entities.Order;
 import com.my_project.my_project.services.OrderServices;
 
+import jakarta.persistence.EntityNotFoundException;
+
 @RestController
 @RequestMapping(value = "/orders")
 public class OrderResource {
@@ -24,21 +26,22 @@ public class OrderResource {
 
     @GetMapping
     public ResponseEntity<List<Order>> getAll() {
-        List<Order> orders = service.listAllUsers();
+        List<Order> orders = service.listAllOrders();
 
         return ResponseEntity.ok().body(orders);
     }
 
     @GetMapping(value = "/{id}")
     public ResponseEntity<?> getById(@PathVariable Long id) {
-        Order order = service.getOneUser(id);
-
-        if (order.getId() == null) {
+        
+        try{
+            Order order = service.getOneOrder(id);
+            return ResponseEntity.ok().body(order);
+        } catch(EntityNotFoundException e) {
             Map<String, String> response = new HashMap<>();
             response.put("error:", "Order Not Found");
+            
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
-        } else {
-            return ResponseEntity.ok().body(service.getOneUser(id));
         }
     }
 

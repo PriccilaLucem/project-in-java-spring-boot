@@ -13,12 +13,11 @@ public class OrderServices {
     @Autowired
     private OrderRepository orderRepository;
 
-    public List<Order> listAllUsers() {
+    public List<Order> listAllOrders() {
         return orderRepository.findAll();
     }
 
-    public Order getOneUser(Long id) {
-        Order order = orderRepository.findById(id).orElse(new Order());
-        return order;
+    public Order getOneOrder(Long id) {
+        return orderRepository.findById(id).get();
     }
 }
