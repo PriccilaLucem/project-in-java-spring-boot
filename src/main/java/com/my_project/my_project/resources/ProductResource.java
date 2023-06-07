@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.my_project.my_project.entities.Product;
 import com.my_project.my_project.services.ProductServices;
 
+import jakarta.persistence.EntityNotFoundException;
+
 @RestController
 @RequestMapping(value = "/products")
 public class ProductResource {
@@ -29,13 +31,16 @@ public class ProductResource {
 
     @GetMapping(value = "/{id}")
     public ResponseEntity<?> getOneProduct(@PathVariable Long id) {
-        Product product = services.getProduct(id);
-        if (product.getId() == null) {
+        try{
+            Product product = services.getProduct(id);
+            return ResponseEntity.ok().body(product);
+
+        } catch(EntityNotFoundException e){
+            
             Map<String, String> response = new HashMap<>();
             response.put("error:", "User Not Found");
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
-        } else {
-            return ResponseEntity.ok().body(product);
-        }
+        } 
+        
     }
 }
