@@ -20,8 +20,7 @@ public class UserServices {
     }
 
     public User getOneUser(Long id) {
-        User user = userRepository.findById(id).orElse(new User());
-        return user;
+       return userRepository.findById(id).get();
     }
 
     public User insertUser(User user) {

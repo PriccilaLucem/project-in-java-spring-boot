@@ -15,10 +15,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Map;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 import com.my_project.my_project.entities.User;
+import com.my_project.my_project.entities.dto.UserDto;
 import com.my_project.my_project.services.UserServices;
 
 import jakarta.persistence.EntityNotFoundException;
@@ -31,29 +33,37 @@ public class UserResource {
     private UserServices service;
 
     @GetMapping
-    public ResponseEntity<List<User>> getAll() {
+    public ResponseEntity<List<UserDto>> getAll() {
         List<User> users = service.listAllUsers();
-
-        return ResponseEntity.ok().body(users);
+        List<UserDto> usersDtos = new ArrayList<>();
+        
+        for(int i = 0; i<users.size(); i++){
+           usersDtos.add(users.get(i).createUserDto());
+        }
+        return ResponseEntity.ok().body(usersDtos);
     }
 
     @GetMapping(value = "/{id}")
     public ResponseEntity<?> getById(@PathVariable Long id) {
-        User user = service.getOneUser(id);
+        
+        try{
+            
+            User user = service.getOneUser(id);
+            return ResponseEntity.ok().body(user.createUserDto());
 
-        if (user.getId() == null) {
+        }catch(EntityNotFoundException e){
+
             Map<String, String> response = new HashMap<>();
             response.put("error:", "User Not Found");
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
-        } else {
-            return ResponseEntity.ok().body(user);
         }
+        
     }
 
     @PostMapping
     public ResponseEntity<?> postUser(@RequestBody User user) {
         User newUser = service.insertUser(user);
-        return ResponseEntity.status(HttpStatus.CREATED).body(newUser);
+        return ResponseEntity.status(HttpStatus.CREATED).body(newUser.createUserDto());
     }
 
     @DeleteMapping(value = "/{id}")
@@ -76,11 +86,11 @@ public class UserResource {
     }
 
     @PutMapping(value = "/{id}")
-    public ResponseEntity<?> patchUser(@PathVariable Long id, @RequestBody User patchItens) {
+    public ResponseEntity<?> putUser(@PathVariable Long id, @RequestBody User patchItens) {
         try {
 
             User user = service.updateUser(id, patchItens);
-            return ResponseEntity.accepted().body(user);
+            return ResponseEntity.accepted().body(user.createUserDto());
         } catch (EntityNotFoundException e) {
             Map<String, String> response = new HashMap<>();
             response.put("error:", "User Not Found");
