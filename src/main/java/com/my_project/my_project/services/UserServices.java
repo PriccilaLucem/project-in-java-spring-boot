@@ -8,6 +8,8 @@ import org.springframework.stereotype.Service;
 import com.my_project.my_project.entities.User;
 import com.my_project.my_project.repostories.UserRepository;
 
+import jakarta.persistence.EntityNotFoundException;
+
 @Service
 public class UserServices {
     @Autowired
@@ -46,5 +48,13 @@ public class UserServices {
         entity.setName(obj.getName());
         entity.setEmail(obj.getEmail());
         entity.setPhone(obj.getPhone());
+    }
+
+    public User getByEmail(String email){
+        User user = userRepository.findByEmail(email);
+        if(user == null){
+            throw new EntityNotFoundException("Email not exists");
+        };
+        return user;
     }
 }

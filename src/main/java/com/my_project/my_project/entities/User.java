@@ -11,6 +11,7 @@ import jakarta.persistence.Table;
 import org.mindrot.jbcrypt.BCrypt;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.my_project.my_project.resources.exceptions.PasswordException;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -39,7 +40,9 @@ public class User implements Serializable {
     public void setId(Long id) {
         this.id = id;
     }
-
+    public String getPassword() {
+        return password;
+    }
     public User(Long id, String name, String email, String phone, String password) {
         this.id = id;
         this.name = name;
@@ -105,6 +108,12 @@ public class User implements Serializable {
         return this;
     }
 
+    public void verifyPassword(String password){
+        if(!BCrypt.checkpw(password, this.password)){
+            throw new PasswordException("Incorrect password");
+        }
+    }
+
     @Override
     public boolean equals(Object o) {
         if (o == this)
@@ -115,14 +124,6 @@ public class User implements Serializable {
         User user = (User) o;
         return Objects.equals(id, user.id) && Objects.equals(name, user.name) && Objects.equals(email, user.email)
                 && Objects.equals(phone, user.phone) && Objects.equals(password, user.password);
-    }
-
-    public static boolean verifyPassword(String password, String hashedPassword) {
-        if (BCrypt.checkpw(password, hashedPassword)) {
-            return true;
-        } else {
-            return false;
-        }
     }
 
     @Override
